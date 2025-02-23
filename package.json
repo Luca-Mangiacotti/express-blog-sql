@@ -1,5 +1,5 @@
 {
-  "name": "express-pizzeria-crud",
+  "name": "express-blog-sql",
   "version": "1.0.0",
   "description": "CRUD per \"pizzeria\"",
   "main": "index.js",
@@ -10,16 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Luca-Mangiacotti/express-pizzeria-crud.git"
+    "url": "git+https://github.com/Luca-Mangiacotti/express-blog-sql.git"
   },
   "author": "Luca Mangiacotti",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Luca-Mangiacotti/express-pizzeria-crud/issues"
+    "url": "https://github.com/Luca-Mangiacotti/express-blog-sql/issues"
   },
-  "homepage": "https://github.com/Luca-Mangiacotti/express-pizzeria-crud#readme",
+  "homepage": "https://github.com/Luca-Mangiacotti/express-blog-sql#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
   }
 }

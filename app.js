@@ -11,11 +11,11 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("Server della mia pizzeria");
+  res.send("Server del blog-sql");
 });
 
 // Registro le rotte
-app.use("/pizzas", pizzasRouter);
+app.use("/posts", pizzasRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

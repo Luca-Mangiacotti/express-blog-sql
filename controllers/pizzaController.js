@@ -1,17 +1,18 @@
+//DB REAL
+const connection = require("../data/db.js");
+//DB FAKE
 const pizzasData = require("../data/pizzasData");
 
 // Index
 const index = (req, res) => {
-  let pizzasFiltered = pizzasData;
-  const { ingredient } = req.query;
+  const sql = "SELECT * FROM posts";
 
-  if (ingredient) {
-    pizzasFiltered = pizzasFiltered.filter((pizza) =>
-      pizza.ingredients.includes(ingredient)
-    );
-  }
-
-  res.json(pizzasFiltered);
+  connection.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Database query failed" });
+    }
+    res.json(results);
+  });
 };
 
 // Show
