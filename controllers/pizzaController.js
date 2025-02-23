@@ -23,6 +23,14 @@ const show = (req, res) => {
     if (err) {
       return res.status(500).json({ error: "Database query failed" });
     }
+
+    //controllo per un post intesistente
+    const pizza = results[0];
+    if (!pizza) {
+      return res.status(404).json({
+        error: "Post not found",
+      });
+    }
     //dal momento che la risposta che ci viene fornita è sempre un array, andiamo a limitare la funzione di show alla visualizzazione
     //di un solo elemento sottoforma di oggetto aggiungendo l'indice 0 "[0]" al nostro risultato
     res.json(results[0]);
