@@ -17,9 +17,10 @@ const index = (req, res) => {
 
 // Show
 const show = (req, res) => {
-  const sql = `SELECT * FROM posts WHERE id =${req.params.id} `;
+  const id = req.params.id;
+  const sql = `SELECT * FROM posts WHERE id = ? `;
 
-  connection.query(sql, (err, results) => {
+  connection.query(sql, [id], (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Database query failed" });
     }
@@ -95,17 +96,26 @@ const modify = (req, res) => {
 
 // Delete
 const destroy = (req, res) => {
-  const pizza = pizzasData.find((elm) => elm.id == req.params.id);
+  const id = req.params.id;
+  const sql = `DELETE FROM posts WHERE id = ? `;
 
-  if (!pizza) {
-    return res.status(404).json({
-      error: "Pizza not found",
-    });
-  }
+  connection.query(sql, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        error: "Database query failed",
+      });
+    }
 
-  pizzasData.splice(pizzasData.indexOf(pizza), 1);
+    //controllo per un post intesistente
+    const pizza = results[0];
+    if (!pizza) {
+      return res.status(404).json({
+        error: "Post not found",
+      });
+    }
 
-  res.sendStatus(204);
+    res.sendStatus(204);
+  });
 };
 
 module.exports = { index, show, store, update, modify, destroy };
