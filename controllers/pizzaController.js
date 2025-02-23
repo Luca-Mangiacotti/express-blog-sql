@@ -18,7 +18,12 @@ const index = (req, res) => {
 // Show
 const show = (req, res) => {
   const id = req.params.id;
-  const sql = `SELECT * FROM posts WHERE id = ? `;
+  const sql = `SELECT * FROM posts  WHERE id = ? `;
+  const tagsSql = ` SELECT tags.label, tags.id
+                    FROM posts 
+                    JOIN post_tag ON posts.id = post_tag.post_id
+                    JOIN tags ON post_tag.tag_id = tags.id
+                    WHERE post_tag.post_id = ?`;
 
   connection.query(sql, [id], (err, results) => {
     if (err) {
@@ -26,15 +31,24 @@ const show = (req, res) => {
     }
 
     //controllo per un post intesistente
-    const pizza = results[0];
-    if (!pizza) {
+    //dal momento che la risposta che ci viene fornita è sempre un array, andiamo a limitare la funzione di show alla visualizzazione
+    //di un solo elemento sottoforma di oggetto aggiungendo l'indice 0 "[0]" al nostro risultato
+    const post = results[0];
+    if (!post) {
       return res.status(404).json({
         error: "Post not found",
       });
     }
-    //dal momento che la risposta che ci viene fornita è sempre un array, andiamo a limitare la funzione di show alla visualizzazione
-    //di un solo elemento sottoforma di oggetto aggiungendo l'indice 0 "[0]" al nostro risultato
-    res.json(results[0]);
+
+    connection.query(tagsSql, [id], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: "Database query failed" });
+      }
+
+      post.tag = results;
+
+      res.json(post);
+    });
   });
 };
 
@@ -107,8 +121,8 @@ const destroy = (req, res) => {
     }
 
     //controllo per un post intesistente
-    const pizza = results[0];
-    if (!pizza) {
+    const post = results[0];
+    if (!post) {
       return res.status(404).json({
         error: "Post not found",
       });
